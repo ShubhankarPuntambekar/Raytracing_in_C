@@ -4,11 +4,12 @@
 
 #define WIDTH 1800
 #define HEIGHT 1200
-#define COLOUR_WHITE 0xffffffff
+#define COLOUR_BLUE 0x2b79f8
+#define COLOUR_ORANGE 0xf6ac18
 #define COLOUR_BLACK 0x00000000
-#define RAYS_COUNT 100
+#define RAYS_COUNT 225
 #define PI 3.14159265358979323846
-#define COLOR_GRAY 0xefefefef
+#define COLOUR_RAY 0xf6C518
 
 struct Circle
 {
@@ -69,7 +70,7 @@ void FillRays(SDL_Surface *surface, struct Ray rays[RAYS_COUNT], Uint32 colour, 
             x_drw += step * cos(ray.angle);
             y_drw += step * sin(ray.angle);
 
-            SDL_Rect pixel = (SDL_Rect){x_drw, y_drw, 1, 1};
+            SDL_Rect pixel = (SDL_Rect){x_drw, y_drw, 2, 2};
             SDL_FillSurfaceRect(surface, &pixel, colour);
 
             if (x_drw < 0 || x_drw > WIDTH)
@@ -105,7 +106,7 @@ int main()
     struct Ray rays[RAYS_COUNT];
     create_rays(circle, rays);
 
-    double obstacle_animation_y = 1;
+    double obstacle_animation_y = 6;
     int animation = 1;
     SDL_Event event; // events that occur e.g key press
     while (animation)
@@ -128,13 +129,14 @@ int main()
                 create_rays(circle, rays);
             }
         }
+
         SDL_FillSurfaceRect(surface, &erase_rect, COLOUR_BLACK);
-        FillCircle(surface, circle, COLOUR_WHITE);
-        FillCircle(surface, obstacle_circle, COLOUR_WHITE);
-        FillRays(surface, rays, COLOR_GRAY, obstacle_circle);
+        FillCircle(surface, circle, COLOUR_ORANGE);
+        FillCircle(surface, obstacle_circle, COLOUR_BLUE);
+        FillRays(surface, rays, COLOUR_RAY, obstacle_circle);
 
         obstacle_circle.y += obstacle_animation_y;
-        if (obstacle_circle.y + obstacle_circle.radius < 0 || obstacle_circle.y + obstacle_circle.radius > HEIGHT)
+        if (obstacle_circle.y - obstacle_circle.radius < 0 || obstacle_circle.y + obstacle_circle.radius > HEIGHT)
         {
             obstacle_animation_y = -obstacle_animation_y;
         }
