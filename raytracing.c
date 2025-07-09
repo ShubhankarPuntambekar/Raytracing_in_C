@@ -105,6 +105,7 @@ int main()
     struct Ray rays[RAYS_COUNT];
     create_rays(circle, rays);
 
+    double obstacle_animation_y = 1;
     int animation = 1;
     SDL_Event event; // events that occur e.g key press
     while (animation)
@@ -131,6 +132,13 @@ int main()
         FillCircle(surface, circle, COLOUR_WHITE);
         FillCircle(surface, obstacle_circle, COLOUR_WHITE);
         FillRays(surface, rays, COLOR_GRAY, obstacle_circle);
+
+        obstacle_circle.y += obstacle_animation_y;
+        if (obstacle_circle.y + obstacle_circle.radius < 0 || obstacle_circle.y + obstacle_circle.radius > HEIGHT)
+        {
+            obstacle_animation_y = -obstacle_animation_y;
+        }
+
         SDL_UpdateWindowSurface(window);
         SDL_Delay(10);
     }
